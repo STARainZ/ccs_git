@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    double data[2];
+    int8_t data[2];
     uint32_t zuo,you;
     configure();
     while(1)
@@ -14,64 +14,74 @@ int main(void)
             if(UART_rec[0]==0x50)
             {
                 UARTprintf(0,"RECEIVE 0X50");
-                my_bytnum(UART_rec+1,data,100.0);
-                my_bytnum(UART_rec+3,data+1,100.0);
-                UARTprintf(0,data);
-                UARTprintf(0,"\n");
-                if(UART_rec[5]==0x60)
+//                my_bytnum(UART_rec+1,data,100.0);
+//                my_bytnum(UART_rec+3,data+1,100.0);
+//                UARTprintf(0,data);
+//                UARTprintf(0,"\n");
+                if(UART_rec[3]==0x60)
                 {
                     UARTprintf(0,"GO OR DOWN IS OK\n");
-                    if(UART_rec[6]==0x63)
+                    if(UART_rec[4]==0x63)
                     {
-                        zuo = 8000+40*data[0]-10*data[1];
-                        you = 8000+40*data[0]+10*data[1];
+                        zuo = 8000+40*UART_rec[2]-10*UART_rec[3];
+                        you = 8000+40*UART_rec[2]+10*UART_rec[3];
+                        Motor1Z(zuo);
+                        Motor2Z(you);
                     }
-                    else if(UART_rec[5]==0x64)
+                    else if(UART_rec[4]==0x64)
                     {
-                        zuo = 8000+40*data[0]+10*data[1];
-                        you = 8000+40*data[0]-10*data[1];
+                        zuo = 8000+40*UART_rec[2]-10*UART_rec[3];
+                        you = 8000+40*UART_rec[2]+10*UART_rec[3];
+                        Motor1Z(zuo);
+                        Motor2Z(you);
                     }
-                    else if(UART_rec[5]==0x65)
+                    else if(UART_rec[4]==0x65)
                     {
-                        zuo = 1000;
-                        you = 1000;
+                        zuo = 8000+40*UART_rec[2];
+                        you = 8000+40*UART_rec[2];
+                        Motor1Z(zuo);
+                        Motor2Z(you);
+
                     }
                     else
                     {
                         Motor1Disanable;
                         Motor2Disanable;
                     }
-                    Motor1Z(zuo);
-                    Motor2Z(you);
+
                     UARTprintf(0,"UP IS OK\n");
                 }
-                else if(UART_rec[5]==0x61)
+                else if(UART_rec[3]==0x61)
                 {
-                    if(UART_rec[6]==0x63)
+                    if(UART_rec[4]==0x63)
                     {
-                        zuo = 8000+40*data[0]-10*data[1];
-                        you = 8000+40*data[0]+10*data[1];
+                        zuo = 8000+40*UART_rec[2]-10*UART_rec[3];
+                        you = 8000+40*UART_rec[2]+10*UART_rec[3];
+                        Motor1F(zuo);
+                        Motor2F(you);
                     }
-                    else if(UART_rec[5]==0x64)
+                    else if(UART_rec[4]==0x64)
                     {
-                        zuo = 8000+40*data[0]+10*data[1];
-                        you = 8000+40*data[0]-10*data[1];
+                        zuo = 8000+40*UART_rec[2]-10*UART_rec[3];
+                        you = 8000+40*UART_rec[2]+10*UART_rec[3];
+                        Motor1F(zuo);
+                        Motor2F(you);
                     }
-                    else if(UART_rec[5]==0x65)
+                    else if(UART_rec[4]==0x65)
                     {
-                        zuo = 8000+40*data[0];
-                        you = 8000+40*data[0];
+                        zuo = 8000+40*UART_rec[2];
+                        you = 8000+40*UART_rec[2];
+                        Motor1F(zuo);
+                        Motor2F(you);
                     }
                     else
                     {
                         Motor1Disanable;
                         Motor2Disanable;
                     }
-                    Motor1F(zuo);
-                    Motor2F(you);
                     UARTprintf(0,"DOWM IS OK\n");
                 }
-                else if(UART_rec[5]==0x62)
+                else if(UART_rec[3]==0x62)
                 {
                     Motor1Disanable;
                     Motor2Disanable;
